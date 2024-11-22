@@ -8,9 +8,10 @@ public class Act1 {
 
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-        System.out.println("Bienvenido a la ronda 3 de ejercicios de bucles");
+        System.out.println("Ejercicios de arrays");
         System.out.println("Elige que ejercicio quieres");
 
+    
         boolean seguir = true;
         while (seguir) {
             System.out.println(dibujarMenu());
@@ -56,9 +57,9 @@ public class Act1 {
 
         //Inicializar con valores por teclado
         for (int i = 0; i < cadenas.length; i++) {
-            //cadenas[i] = sc.nextLine();
+            cadenas[i] = sc.nextLine();
             //para probar
-            cadenas[i] = "Palabra " + i;
+            //cadenas[i] = "Palabra " + i;
         }
 
         //Copiar
@@ -66,6 +67,11 @@ public class Act1 {
         for (int i = 0; i < cadenas.length; i++) {
             invertido[i] = cadenas[cadenas.length-1-i];
         }
+        /*int j = cadenas.length-1;
+        for (int i = 0; i < invertido.length; i++) {
+            invertido[i]=cadenas[j];
+            j--;
+        }*/
         System.out.println(Arrays.toString(cadenas));
         System.out.println(Arrays.toString(invertido));
     }
@@ -75,15 +81,15 @@ public class Act1 {
 
         for (int i = 0; i < notas.length; i++) {
             do{
-                //notas[i] = Float.parseFloat(sc.nextLine());
+            notas[i] = Float.parseFloat(sc.nextLine());
             //para probar
-            notas[i] = i+0.5f;
+            //notas[i] = i+0.5f;
             }while(notas[i]<0 || notas[i]>10);
         }
 
         float suma = 0;
-        float max = Float.MIN_VALUE;
-        float min = Float.MAX_VALUE;
+        float max = Float.MIN_VALUE;    //Tambien vale con un 0
+        float min = Float.MAX_VALUE;    //Tambien vale con un 10, porque son notas
         for (int i = 0; i < notas.length; i++) {
             suma+=notas[i];
             if (notas[i]>max){
@@ -92,7 +98,7 @@ public class Act1 {
             if (notas[i]<min){
                 min=notas[i];
             }
-            System.out.println("Nota 1: " + notas[i]);
+            System.out.println("Nota : " + notas[i]);
         }
         System.out.println("Media: " + suma/notas.length + " Máxima: " + max + " Mínima: " + min);
     }
@@ -142,15 +148,15 @@ public class Act1 {
         int[] vector3 = new int[5];
 
         for (int i = 0; i < vector1.length; i++) {
-            //vector1[i] = Integer.parseInt(sc.nextLine());
+            vector1[i] = Integer.parseInt(sc.nextLine());
             //Para probar
-            vector1[i] = i;
+            //vector1[i] = i;
         }
 
         for (int i = 0; i < vector2.length; i++) {
-            //vector2[i] = Integer.parseInt(sc.nextLine());
+            vector2[i] = Integer.parseInt(sc.nextLine());
             //Para probar
-            vector2[i] = i;
+            //vector2[i] = i;
         }
 
         for (int i = 0; i < vector3.length; i++) {
