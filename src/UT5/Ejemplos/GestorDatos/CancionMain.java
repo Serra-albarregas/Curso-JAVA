@@ -5,6 +5,8 @@ import java.util.Date;
 
 /**
  * Clase principal para realizar pruebas con las clases Cancion y GestorCancion.
+ * 
+ * @author Pablo Collar Serradilla
  */
 public class CancionMain {
     public static void main(String[] args) {

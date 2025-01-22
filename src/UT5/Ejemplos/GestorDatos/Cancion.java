@@ -4,6 +4,8 @@ import java.util.Date;
 
 /**
  * Representa una canción con título, autor, género musical y fecha de salida.
+ * 
+ * @author Pablo Collar Serradilla
  */
 public class Cancion {
     private String titulo;

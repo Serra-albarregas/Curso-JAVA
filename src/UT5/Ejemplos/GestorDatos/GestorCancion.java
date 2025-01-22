@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 /**
  * Clase que gestiona una colección de canciones.
+ * 
+ * @author Pablo Collar Serradilla
  */
 class GestorCancion {
 
