@@ -27,8 +27,10 @@ class GestorCancion {
      * @param c la canción a añadir.
      */
     public void nuevaCancion(Cancion c) {
-        canciones[lleno] = c;
-        lleno++;
+        if (lleno<TAM){
+            canciones[lleno] = c;
+            lleno++;
+        }
     }
 
     /**
