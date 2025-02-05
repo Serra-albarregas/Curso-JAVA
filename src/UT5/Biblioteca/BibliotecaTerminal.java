@@ -31,7 +31,7 @@ public class BibliotecaTerminal {
     }
 
     public void loopPrincipal() {
-        //loopInicioSesion();
+        // loopInicioSesion();
         biblioteca.inicioSesion("javierd", "password2");
         if (biblioteca.getSesion().getEsAdmin()) {
             loopPrincipalAdmin();
@@ -98,11 +98,11 @@ public class BibliotecaTerminal {
         Libro l = null;
         mostrarMenuBusquedaLibroLight();
         int opcion = pedirNumero(1, 3);
-        if (opcion != 3){
-            if (opcion == 1){
+        if (opcion != 3) {
+            if (opcion == 1) {
                 System.out.println("Introduce el título");
                 l = biblioteca.buscarLibro(pedirString());
-            }else if (opcion == 2){
+            } else if (opcion == 2) {
                 System.out.println("Introduce el ISBN");
                 l = biblioteca.buscarLibroPorISBN(pedirString());
             }
@@ -110,7 +110,7 @@ public class BibliotecaTerminal {
                 System.out.println("¿Deseas eliminar el siguiente libro? (Y/N)");
                 System.out.println(l.toString());
                 if (pedirBooleano()) {
-                    if (biblioteca.eliminarLibroPorISBN(l.getISBN())){
+                    if (biblioteca.eliminarLibroPorISBN(l.getISBN())) {
                         System.out.println("Libro eliminado correctamente");
                     }
                 }
@@ -161,43 +161,142 @@ public class BibliotecaTerminal {
                 }
                 break;
         }
+    }
 
+    public Libro seleccionarLibro() {
+        Libro l = null;
+        Libro[] ls = null;
+        mostrarMenuBusquedaLibro();
+        int opcion = pedirNumero(1, 6);
+        switch (opcion) {
+            case 1:
+                System.out.println("Introduce el titulo");
+                l = biblioteca.buscarLibro(pedirString());
+                if (l != null)
+                    System.out.println(l.toString());
+                else {
+                    System.out.println("Libro no encontrado");
+                }
+                break;
+            case 2:
+                System.out.println("Introduce el ISBN");
+                l = biblioteca.buscarLibroPorISBN(pedirString());
+                if (l != null)
+                    System.out.println(l.toString());
+                else {
+                    System.out.println("Libro no encontrado");
+                }
+                break;
+            case 3:
+                System.out.println("Introduce el autor");
+                ls = biblioteca.buscarLibrosPorAutor(pedirString());
+                if (ls != null && ls.length > 0) {
+                    System.out.println(GestorLibro.toString(ls));
+                } else {
+                    System.out.println("No se ha encontrado ningún libro");
+                }
+                break;
+            case 4:
+                System.out.println("Selecciona la categoria");
+                ls = biblioteca.buscarLibrosPorCategoria(pedirCategoria());
+                if (ls != null && ls.length > 0) {
+                    System.out.println(GestorLibro.toString(ls));
+                } else {
+                    System.out.println("No se ha encontrado ningún libro");
+                }
+                break;
+        }
+        if ((opcion==3||opcion==4)&& ls != null && ls.length > 0){
+            System.out.println("Selecciona un libro");
+            int seleccion = pedirNumero(0, ls.length-1);
+            l = ls[seleccion];
+        }
+        return l;
     }
 
     public void mostrarLibros() {
-        System.out.println(biblioteca.getExistencias());
+        System.out.println(biblioteca.stringExistencias());
     }
 
     public void registrarUsuario() {
-
+        Usuario usuario = pedirUsuario();
+        if (biblioteca.addUsuario(usuario)) {
+            System.out.println("Usuario registrado correctamente");
+        } else {
+            System.out.println("Ha ocurrido un error en el registro");
+        }
     }
 
     public void consultarUsuarios() {
-
+        System.out.println(biblioteca.stringUsuarios());
     }
 
     public void realizarPrestamo() {
-
+        Libro l = seleccionarLibro();
+        System.out.println("¿Quieres pedir prestado el siguiente libro?");
+        System.out.println(l.toString());
+        if (pedirBooleano()){
+            try {
+                biblioteca.prestar(l);
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public void devolverPrestamo() {
+        if (biblioteca.getSesion().getNPrestadosActual()>0){
+            System.out.println(biblioteca.getSesion().getPrestados().toString());
+            System.out.println("Selecciona un libro para devolver");
+            int seleccion = pedirNumero(0, biblioteca.getSesion().getNPrestadosActual());
+            try {
+                biblioteca.devolver(biblioteca.getSesion().getPrestados().getLibro(seleccion));
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+        else {
+            System.out.println("No tienes ningún prestamo activo");
+        }
 
     }
 
     public void mostrarPrestados() {
-
+        if (biblioteca.getSesion().getPrestados().getLleno()==0){
+            System.out.println("No tienes libros prestados");
+        }
+        else{
+            System.out.println("Tus libros prestados:");
+            System.out.println(biblioteca.getSesion().getPrestados().toString());
+        }
     }
 
     public void mostrarPrestamos() {
-
+        if (biblioteca.getPrestadosActuales()==0){
+            System.out.println("La biblioteca no tiene prestamos actualmente");
+        }else{
+            System.out.println("Libros prestados actualmente:");
+            System.out.println(biblioteca.stringPrestados());
+        }
     }
 
     public void mostrarLibrosMasPrestados() {
-
+        if (biblioteca.getTotalPrestados()==0){
+            System.out.println("La biblioteca no ha realizado ningún prestamo");
+        }else{
+            System.out.println("Libros más prestados:");
+            System.out.println(GestorLibro.toString(biblioteca.librosMasPrestados()));
+        }
     }
 
     public void mostrarUsuariosMasPrestamos() {
-
+        if (biblioteca.getNumeroUsuarios()==0){
+            System.out.println("La biblioteca no tiene usuarios");
+        }else{
+            System.out.println("Usuarios con más prestamos:");
+            System.out.println(GestorUsuario.toString(biblioteca.usuariosConMasPrestamos()));
+        }
     }
 
     public void mostrarMenuGeneralAdmin() {

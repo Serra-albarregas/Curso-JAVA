@@ -13,6 +13,10 @@ public class GestorLibro {
         lleno = 0;
     }
 
+    public int getLleno(){
+        return this.lleno;
+    }
+
     public boolean addLibro(Libro l){
         if (l != null && lleno<tam){
             libros[lleno] = l;
@@ -22,6 +26,10 @@ public class GestorLibro {
         else{
             return false;
         }
+    }
+
+    public Libro getLibro(int indice){
+        return libros[indice];
     }
 
     public int buscarIndiceLibro(String titulo){
@@ -136,11 +144,15 @@ public class GestorLibro {
         }
     }
 
+    public Libro[] getLibros(){
+        return Arrays.copyOf(libros,lleno);
+    }
+
     @Override
     public String toString() {
         String stringLibro = "";
         for (int i = 0; i < lleno; i++) {
-            stringLibro += libros[i].toString() + "\n";
+            stringLibro += i + "-" + libros[i].toString() + "\n";
         }
         return stringLibro;
     }

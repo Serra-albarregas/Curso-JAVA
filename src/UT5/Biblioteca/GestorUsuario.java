@@ -13,6 +13,10 @@ public class GestorUsuario {
         lleno = 0;
     }
 
+    public int getLleno(){
+        return this.lleno;
+    }
+
     public boolean addUsuario(Usuario u){
         if (u!=null && lleno<tam){
             usuarios[lleno] = u;
@@ -80,10 +84,22 @@ public class GestorUsuario {
         }
     }
 
+    public Usuario[] getUsuarios(){
+        return Arrays.copyOf(usuarios, lleno);
+    }
+
     @Override
     public String toString() {
         String stringUsuario = "";
         for (int i = 0; i < lleno; i++) {
+            stringUsuario += usuarios[i].toString() + "\n";
+        }
+        return stringUsuario;
+    }
+
+    public static String toString(Usuario[] usuarios) {
+        String stringUsuario = "";
+        for (int i = 0; i < usuarios.length; i++) {
             stringUsuario += usuarios[i].toString() + "\n";
         }
         return stringUsuario;

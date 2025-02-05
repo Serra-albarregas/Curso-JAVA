@@ -64,7 +64,105 @@ public class Biblioteca {
         return this.sesion;
     }
 
-    public String getExistencias(){
+    public int getTotalPrestados(){
+        return totalPrestados;
+    }
+
+    public int getPrestadosActuales(){
+        return prestados.getLleno();
+    }
+
+    public int getNumeroUsuarios(){
+        return usuarios.getLleno();
+    }
+
+    public String stringExistencias(){
         return this.existencias.toString();
+    }
+
+    public String stringUsuarios(){
+        return this.usuarios.toString();
+    }
+
+    public String stringPrestados(){
+        return this.prestados.toString();
+    }
+
+    public void prestar(Libro libro) throws Exception{
+        if (!sesion.puedePedir()){
+            throw new Exception("El libro no está disponible.");
+        }
+        if (!libro.getDisponible()){
+            throw new Exception("El libro no está disponible.");
+        }
+        sesion.pedirPrestado(libro);
+        libro.prestar(sesion);
+        prestados.addLibro(libro);
+        totalPrestados++;
+    }
+
+    public void prestar(Libro libro, Usuario usuario) throws Exception{
+        if (!usuario.puedePedir()){
+            throw new Exception("El libro no está disponible.");
+        }
+        if (!libro.getDisponible()){
+            throw new Exception("El libro no está disponible.");
+        }
+        usuario.pedirPrestado(libro);
+        libro.prestar(usuario);
+        prestados.addLibro(libro);
+        totalPrestados++;
+    }
+
+    public void devolver(Libro libro) throws Exception{
+        if (sesion.getPrestados().buscarPorISBN(libro.getISBN())==null){
+            throw new Exception("No tienes prestado el libro selecionado");
+        }
+        if (libro.getPrestadoA()==null){
+            throw new Exception("El libro no está marcado como prestado");
+        }
+        sesion.devolver(libro);
+        libro.setPrestadoA(null);
+        prestados.eliminarLibroPorISBN(libro.getISBN());
+    }
+
+    public Libro[] librosMasPrestados(){
+        int devueltos=3;
+        Libro[] masPrestados = new Libro[devueltos];
+        Libro[] aux = prestados.getLibros();
+        for (int i = 0; i<devueltos;i++){
+            Libro masPrestado = masPrestados[0];
+            int iMasPrestado=0;
+            for (int j = 1; j < aux.length; j++) {
+                Libro libro = aux[j];
+                if (libro!=null && libro.getVecesPrestado()>masPrestado.getVecesPrestado()){
+                    masPrestado=libro;
+                    iMasPrestado=j;
+                }
+            }
+            aux[iMasPrestado]=null;
+            masPrestados[i]=masPrestado;
+        }
+        return masPrestados;
+    }
+
+    public Usuario[] usuariosConMasPrestamos(){
+        int devueltos=3;
+        Usuario[] masPrestamos = new Usuario[devueltos];
+        Usuario[] aux = usuarios.getUsuarios();
+        for (int i = 0; i<devueltos;i++){
+            Usuario max = masPrestamos[0];
+            int iMasPrestado=0;
+            for (int j = 1; j < aux.length; j++) {
+                Usuario usuario = aux[j];
+                if (usuario!=null && usuario.getPrestamosTotales()>max.getPrestamosTotales()){
+                    max=usuario;
+                    iMasPrestado=j;
+                }
+            }
+            aux[iMasPrestado]=null;
+            masPrestamos[i]=max;
+        }
+        return masPrestamos;
     }
 }
