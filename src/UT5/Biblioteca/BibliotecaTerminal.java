@@ -31,7 +31,8 @@ public class BibliotecaTerminal {
     }
 
     public void loopPrincipal() {
-        loopInicioSesion();
+        //loopInicioSesion();
+        biblioteca.inicioSesion("javierd", "password2");
         if (biblioteca.getSesion().getEsAdmin()) {
             loopPrincipalAdmin();
         } else {
@@ -45,7 +46,7 @@ public class BibliotecaTerminal {
         boolean salir = false;
         while (!salir) {
             mostrarMenuGeneralAdmin();
-            int opcion = pedirNumero();
+            int opcion = pedirNumero(1, 14);
             switch (opcion) {
                 case 1 -> addLibro();
                 case 2 -> eliminarLibro();
@@ -60,8 +61,8 @@ public class BibliotecaTerminal {
                 case 11 -> mostrarLibrosMasPrestados();
                 case 12 -> mostrarUsuariosMasPrestamos();
                 case 13 -> salir = true;
-                default -> System.out.println("Opcion incorrecta");
             }
+            esperarTecla();
             limpiarConsola();
         }
     }
@@ -85,19 +86,86 @@ public class BibliotecaTerminal {
     }
 
     public void addLibro() {
-
+        Libro libro = pedirLibro();
+        if (biblioteca.addLibro(libro)) {
+            System.out.println("Libro añadido correctamente");
+        } else {
+            System.out.println("Ha ocurrido un erro al añadir el libro");
+        }
     }
 
     public void eliminarLibro() {
-
+        Libro l = null;
+        mostrarMenuBusquedaLibroLight();
+        int opcion = pedirNumero(1, 3);
+        if (opcion != 3){
+            if (opcion == 1){
+                System.out.println("Introduce el título");
+                l = biblioteca.buscarLibro(pedirString());
+            }else if (opcion == 2){
+                System.out.println("Introduce el ISBN");
+                l = biblioteca.buscarLibroPorISBN(pedirString());
+            }
+            if (l != null) {
+                System.out.println("¿Deseas eliminar el siguiente libro? (Y/N)");
+                System.out.println(l.toString());
+                if (pedirBooleano()) {
+                    if (biblioteca.eliminarLibroPorISBN(l.getISBN())){
+                        System.out.println("Libro eliminado correctamente");
+                    }
+                }
+            }
+        }
     }
 
     public void buscarLibro() {
+        Libro l = null;
+        Libro[] ls = null;
+        mostrarMenuBusquedaLibro();
+        int opcion = pedirNumero(1, 6);
+        switch (opcion) {
+            case 1:
+                System.out.println("Introduce el titulo");
+                l = biblioteca.buscarLibro(pedirString());
+                if (l != null)
+                    System.out.println(l.toString());
+                else {
+                    System.out.println("Libro no encontrado");
+                }
+                break;
+            case 2:
+                System.out.println("Introduce el ISBN");
+                l = biblioteca.buscarLibroPorISBN(pedirString());
+                if (l != null)
+                    System.out.println(l.toString());
+                else {
+                    System.out.println("Libro no encontrado");
+                }
+                break;
+            case 3:
+                System.out.println("Introduce el autor");
+                ls = biblioteca.buscarLibrosPorAutor(pedirString());
+                if (ls != null && ls.length > 0) {
+                    System.out.println(GestorLibro.toString(ls));
+                } else {
+                    System.out.println("No se ha encontrado ningún libro");
+                }
+                break;
+            case 4:
+                System.out.println("Selecciona la categoria");
+                ls = biblioteca.buscarLibrosPorCategoria(pedirCategoria());
+                if (ls != null && ls.length > 0) {
+                    System.out.println(GestorLibro.toString(ls));
+                } else {
+                    System.out.println("No se ha encontrado ningún libro");
+                }
+                break;
+        }
 
     }
 
     public void mostrarLibros() {
-
+        System.out.println(biblioteca.getExistencias());
     }
 
     public void registrarUsuario() {
@@ -232,6 +300,20 @@ public class BibliotecaTerminal {
                 "\n   =======================================" + RESET);
     }
 
+    public void mostrarMenuBusquedaLibro() {
+        System.out.println("Elige un criterio de búsqueda");
+        System.out.println("[1] - Por título");
+        System.out.println("[2] - Por ISBN");
+        System.out.println("[3] - Por autor");
+        System.out.println("[4] - Por categoría");
+    }
+
+    public void mostrarMenuBusquedaLibroLight() {
+        System.out.println("Elige un criterio de búsqueda");
+        System.out.println("[1] - Por título");
+        System.out.println("[2] - Por ISBN");
+    }
+
     public Libro pedirLibro() {
         System.out.println("Escribe el titulo del libro");
         String titulo = pedirString();
@@ -281,12 +363,18 @@ public class BibliotecaTerminal {
         return new String(contrasenaChars);
     }
 
-    private int pedirNumero() {
-        Integer numero = null;
-        while (numero == null) {
+    private int pedirNumero(int min, int max) {
+        boolean lecturaCorrecta = false;
+        int numero = 0;
+        while (!lecturaCorrecta) {
             String numString = sc.nextLine();
             try {
                 numero = Integer.parseInt(numString);
+                if (numero >= min && numero < max) {
+                    lecturaCorrecta = true;
+                } else {
+                    System.out.println("El número debe estar entre " + min + " y " + max + ", intentalo de nuevo");
+                }
             } catch (Exception e) {
                 System.out.println("Formato numérico incorrecto. Intentalo de nuevo.");
             }
@@ -330,18 +418,12 @@ public class BibliotecaTerminal {
         for (int i = 0; i < categorias.length; i++) {
             System.out.println(i + ": " + categorias[i].name());
         }
-        int seleccion = -1;
-        do {
-            seleccion = pedirNumero();
-            if (seleccion < 0 || seleccion >= categorias.length) {
-                System.out.println("La opcion seleccionada no existe. Intentalo de nuevo.");
-            }
-        } while (seleccion < 0 || seleccion >= categorias.length);
+        int seleccion = pedirNumero(0, categorias.length);
         return categorias[seleccion];
     }
 
-    private void limpiarConsola(){
-         try {
+    private void limpiarConsola() {
+        try {
             String sistemaOperativo = System.getProperty("os.name").toLowerCase();
             if (sistemaOperativo.contains("win")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -356,7 +438,7 @@ public class BibliotecaTerminal {
 
     private void esperarTecla() {
         System.out.println("Presiona Enter para continuar...");
-        sc.nextLine(); // Espera la entrada del usuario
+        sc.nextLine();
     }
 
     public static void main(String[] args) {

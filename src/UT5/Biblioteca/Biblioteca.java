@@ -21,6 +21,30 @@ public class Biblioteca {
         return existencias.addLibro(l);
     }
 
+    public boolean eliminarLibro(String titulo){
+        return existencias.eliminarLibro(titulo);
+    }
+
+    public boolean eliminarLibroPorISBN(String ISBN){
+        return existencias.eliminarLibroPorISBN(ISBN);
+    }
+
+    public Libro buscarLibro(String titulo) {
+        return existencias.buscarPorTitulo(titulo);
+    }
+
+    public Libro buscarLibroPorISBN(String ISBN) {
+        return existencias.buscarPorISBN(ISBN);
+    }
+
+    public Libro[] buscarLibrosPorAutor(String autor) {
+        return existencias.buscarPorAutor(autor);
+    }
+
+    public Libro[] buscarLibrosPorCategoria(CategoriaLibro categoria){
+        return existencias.buscarPorCategoria(categoria);
+    }
+
     public boolean addUsuario(Usuario u){
         return usuarios.addUsuario(u);
     }
@@ -38,5 +62,9 @@ public class Biblioteca {
 
     public Usuario getSesion(){
         return this.sesion;
+    }
+
+    public String getExistencias(){
+        return this.existencias.toString();
     }
 }

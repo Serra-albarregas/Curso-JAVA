@@ -27,7 +27,7 @@ public class GestorLibro {
     public int buscarIndiceLibro(String titulo){
         int buscar = -1;
         for (int i = 0; i < lleno && buscar == -1; i++) {
-            if (libros[i].getTitulo().equals(titulo)) {
+            if (libros[i].getTitulo().toLowerCase().equals(titulo.toLowerCase())) {
                 buscar = i;
             }
         }
@@ -66,7 +66,7 @@ public class GestorLibro {
         Libro[] resultado = new Libro[tam];
         int libroLleno = 0;
         for (int i = 0; i < lleno; i++) {
-            if (libros[i].getAutor().equals(autor)){
+            if (libros[i].getAutor().toLowerCase().equals(autor.toLowerCase())){
                 resultado[libroLleno] = libros[i];
                 libroLleno++;
             }
@@ -140,6 +140,14 @@ public class GestorLibro {
     public String toString() {
         String stringLibro = "";
         for (int i = 0; i < lleno; i++) {
+            stringLibro += libros[i].toString() + "\n";
+        }
+        return stringLibro;
+    }
+
+    public static String toString(Libro[] libros) {
+        String stringLibro = "";
+        for (int i = 0; i < libros.length; i++) {
             stringLibro += libros[i].toString() + "\n";
         }
         return stringLibro;

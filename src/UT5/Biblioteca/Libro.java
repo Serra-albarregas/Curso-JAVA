@@ -1,5 +1,6 @@
 package UT5.Biblioteca;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Libro {
@@ -83,16 +84,13 @@ public class Libro {
 
     @Override
     public String toString() {
+        SimpleDateFormat formato =  new SimpleDateFormat("dd/MM/yyyy");
         return "{" +
             " titulo='" + getTitulo() + "'" +
             ", autor='" + getAutor() + "'" +
             ", ISBN='" + getISBN() + "'" +
-            ", fechaPublicacion='" + getFechaPublicacion() + "'" +
-            ", prestadoA='" + getPrestadoA() + "'" +
-            ", vecesPrestado='" + getVecesPrestado() + "'" +
+            ", fechaPublicacion='" + formato.format(getFechaPublicacion()) + "'" +
             ", categoriaLibro='" + getCategoriaLibro() + "'" +
             "}";
     }
- 
-    
 }
