@@ -82,15 +82,18 @@ public class Libro {
         return prestadoA==null;
     }
 
+    public void prestar(Usuario prestadoA){
+        setPrestadoA(prestadoA);
+        incrementarPrestado();
+    }
+
     @Override
     public String toString() {
         SimpleDateFormat formato =  new SimpleDateFormat("dd/MM/yyyy");
-        return "{" +
-            " titulo='" + getTitulo() + "'" +
+        return " titulo='" + getTitulo() + "'" +
             ", autor='" + getAutor() + "'" +
             ", ISBN='" + getISBN() + "'" +
             ", fechaPublicacion='" + formato.format(getFechaPublicacion()) + "'" +
-            ", categoriaLibro='" + getCategoriaLibro() + "'" +
-            "}";
+            ", categoriaLibro='" + getCategoriaLibro() + "'";
     }
 }

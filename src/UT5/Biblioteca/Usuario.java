@@ -86,6 +86,23 @@ public class Usuario {
         this.esAdmin = esAdmin;
     }
 
+    public int getNPrestadosActual(){
+        return prestados.getLleno();
+    }
+
+    public boolean puedePedir(){
+        return prestados.getLleno()<TAMPRESTADOS;
+    }
+
+    public void pedirPrestado(Libro l){
+        prestados.addLibro(l);
+        prestamosTotales++;
+    }
+
+    public void devolver(Libro l){
+        prestados.eliminarLibroPorISBN(l.getISBN());
+    }
+
     public boolean login(String nick, String pass){
         return this.nick.equals(nick) && this.pass.equals(pass);
     }
