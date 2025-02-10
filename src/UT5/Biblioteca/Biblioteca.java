@@ -26,7 +26,10 @@ public class Biblioteca {
     }
 
     public boolean eliminarLibroPorISBN(String ISBN){
-        return existencias.eliminarLibroPorISBN(ISBN);
+        if (existencias.buscarPorISBN(ISBN).getDisponible())
+            return existencias.eliminarLibroPorISBN(ISBN);
+        else
+            return false;
     }
 
     public Libro buscarLibro(String titulo) {
@@ -49,6 +52,10 @@ public class Biblioteca {
         return usuarios.addUsuario(u);
     }
 
+    public Usuario buscarUsuario(String nick){
+        return usuarios.buscarUsuario(nick);
+    }
+    
     public boolean inicioSesion(String nick, String pass){
         Usuario u = usuarios.buscarUsuario(nick);
         if (u!=null && u.getPass().equals(pass)){
@@ -77,15 +84,15 @@ public class Biblioteca {
     }
 
     public String stringExistencias(){
-        return this.existencias.toString();
+        return this.existencias.infoLibros();
     }
 
     public String stringUsuarios(){
-        return this.usuarios.toString();
+        return this.usuarios.infoUsuarios();
     }
 
     public String stringPrestados(){
-        return this.prestados.toString();
+        return this.prestados.infoLibrosAdmin();
     }
 
     public void prestar(Libro libro) throws Exception{
@@ -131,9 +138,15 @@ public class Biblioteca {
         Libro[] masPrestados = new Libro[devueltos];
         Libro[] aux = prestados.getLibros();
         for (int i = 0; i<devueltos;i++){
-            Libro masPrestado = masPrestados[0];
+            Libro masPrestado = null;
             int iMasPrestado=0;
-            for (int j = 1; j < aux.length; j++) {
+            int j = 0;
+            while (masPrestado==null) {
+                masPrestado = aux[j];
+                iMasPrestado = j;
+                j++;
+            }
+            for (;j < aux.length; j++) {
                 Libro libro = aux[j];
                 if (libro!=null && libro.getVecesPrestado()>masPrestado.getVecesPrestado()){
                     masPrestado=libro;
@@ -151,11 +164,17 @@ public class Biblioteca {
         Usuario[] masPrestamos = new Usuario[devueltos];
         Usuario[] aux = usuarios.getUsuarios();
         for (int i = 0; i<devueltos;i++){
-            Usuario max = masPrestamos[0];
+            Usuario max = aux[0];
             int iMasPrestado=0;
-            for (int j = 1; j < aux.length; j++) {
+            int j = 0;
+            while (max==null) {
+                max = aux[j];
+                iMasPrestado = j;
+                j++;
+            }
+            for (; j < aux.length; j++) {
                 Usuario usuario = aux[j];
-                if (usuario!=null && usuario.getPrestamosTotales()>max.getPrestamosTotales()){
+                if (usuario!=null && usuario.getPrestados().getLleno()>max.getPrestados().getLleno()){
                     max=usuario;
                     iMasPrestado=j;
                 }

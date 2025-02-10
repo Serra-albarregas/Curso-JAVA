@@ -12,6 +12,9 @@ public class Libro {
     private int vecesPrestado;
     private CategoriaLibro categoriaLibro;
 
+    public static final String RED = "\u001B[31m";
+    public static final String WHITE = "\u001B[37m";
+
     public Libro(String titulo, String autor, String ISBN, Date fechaPublicacion, CategoriaLibro categoriaLibro) {
         this.titulo = titulo;
         this.autor = autor;
@@ -85,6 +88,19 @@ public class Libro {
     public void prestar(Usuario prestadoA){
         setPrestadoA(prestadoA);
         incrementarPrestado();
+    }
+
+    public String infoLibro(){
+        SimpleDateFormat formato =  new SimpleDateFormat("dd/MM/yyyy");
+        String color = prestadoA==null?WHITE:RED;
+        return color + ISBN + ": " + titulo + " por " + autor + ". Categoria " + categoriaLibro + ". Fecha de publicacion " + formato.format(getFechaPublicacion()) + ". Prestado " + vecesPrestado + " veces"+ WHITE;
+    }
+
+    public String infoLibroAdmin(){
+        SimpleDateFormat formato =  new SimpleDateFormat("dd/MM/yyyy");
+        String color = prestadoA==null?WHITE:RED;
+        return color + ISBN + ": " + titulo + " por " + autor + ". Categoria " + categoriaLibro + ". Fecha de publicacion " + formato.format(getFechaPublicacion()) + ". Prestado " + vecesPrestado + " veces"+ WHITE + 
+        "\n\tPrestado a:" + prestadoA.getNick();
     }
 
     @Override

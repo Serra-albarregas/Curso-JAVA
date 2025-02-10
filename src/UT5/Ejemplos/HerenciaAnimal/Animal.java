@@ -1,7 +1,7 @@
 package UT5.Ejemplos.HerenciaAnimal;
 import java.util.Objects;
 
-public class Animal{
+public abstract class Animal {
 
     protected String nombre,tipoAlimentacion;
     protected int edad;

@@ -31,12 +31,20 @@ public class BibliotecaTerminal {
     }
 
     public void loopPrincipal() {
-        // loopInicioSesion();
-        biblioteca.inicioSesion("javierd", "password2");
-        if (biblioteca.getSesion().getEsAdmin()) {
-            loopPrincipalAdmin();
-        } else {
-            loopPrincipalUsuario();
+        boolean salir = false;
+        while (!salir) {
+            mostrarMenuSesion();
+            if (pedirNumero(1, 3) == 1) {
+                loopInicioSesion();
+                // biblioteca.inicioSesion("javierd", "password2");
+                if (biblioteca.getSesion().getEsAdmin()) {
+                    loopPrincipalAdmin();
+                } else {
+                    loopPrincipalUsuario();
+                }
+            } else {
+                salir = true;
+            }
         }
 
         cerrarTerminal();
@@ -56,8 +64,8 @@ public class BibliotecaTerminal {
                 case 6 -> consultarUsuarios();
                 case 7 -> realizarPrestamo();
                 case 8 -> devolverPrestamo();
-                case 9 -> mostrarPrestamos();
-                case 10 -> mostrarPrestados();
+                case 9 -> mostrarPrestados();
+                case 10 -> mostrarPrestamos();
                 case 11 -> mostrarLibrosMasPrestados();
                 case 12 -> mostrarUsuariosMasPrestamos();
                 case 13 -> salir = true;
@@ -68,12 +76,25 @@ public class BibliotecaTerminal {
     }
 
     public void loopPrincipalUsuario() {
-
+        boolean salir = false;
+        while (!salir) {
+            mostrarMenuGeneralUsuario();
+            int opcion = pedirNumero(1, 7);
+            switch (opcion) {
+                case 1 -> buscarLibro();
+                case 2 -> mostrarLibros();
+                case 3 -> realizarPrestamo();
+                case 4 -> devolverPrestamo();
+                case 5 -> mostrarPrestados();
+                case 6 -> salir = true;
+            }
+            esperarTecla();
+            limpiarConsola();
+        }
     }
 
     public void loopInicioSesion() {
         boolean sesion = false;
-        mostrarMenuSesion();
         while (!sesion) {
             System.out.println("Introduce el nombre de usuario");
             String nick = pedirString();
@@ -108,11 +129,13 @@ public class BibliotecaTerminal {
             }
             if (l != null) {
                 System.out.println("¿Deseas eliminar el siguiente libro? (Y/N)");
-                System.out.println(l.toString());
+                System.out.println(l.infoLibro());
                 if (pedirBooleano()) {
                     if (biblioteca.eliminarLibroPorISBN(l.getISBN())) {
                         System.out.println("Libro eliminado correctamente");
                     }
+                }else{
+                    System.out.println("Operación cancelada");
                 }
             }
         }
@@ -128,7 +151,7 @@ public class BibliotecaTerminal {
                 System.out.println("Introduce el titulo");
                 l = biblioteca.buscarLibro(pedirString());
                 if (l != null)
-                    System.out.println(l.toString());
+                    System.out.println(l.infoLibro());
                 else {
                     System.out.println("Libro no encontrado");
                 }
@@ -137,7 +160,7 @@ public class BibliotecaTerminal {
                 System.out.println("Introduce el ISBN");
                 l = biblioteca.buscarLibroPorISBN(pedirString());
                 if (l != null)
-                    System.out.println(l.toString());
+                    System.out.println(l.infoLibro());
                 else {
                     System.out.println("Libro no encontrado");
                 }
@@ -146,7 +169,7 @@ public class BibliotecaTerminal {
                 System.out.println("Introduce el autor");
                 ls = biblioteca.buscarLibrosPorAutor(pedirString());
                 if (ls != null && ls.length > 0) {
-                    System.out.println(GestorLibro.toString(ls));
+                    System.out.println(GestorLibro.infoLibros(ls));
                 } else {
                     System.out.println("No se ha encontrado ningún libro");
                 }
@@ -155,7 +178,7 @@ public class BibliotecaTerminal {
                 System.out.println("Selecciona la categoria");
                 ls = biblioteca.buscarLibrosPorCategoria(pedirCategoria());
                 if (ls != null && ls.length > 0) {
-                    System.out.println(GestorLibro.toString(ls));
+                    System.out.println(GestorLibro.infoLibros(ls));
                 } else {
                     System.out.println("No se ha encontrado ningún libro");
                 }
@@ -172,18 +195,14 @@ public class BibliotecaTerminal {
             case 1:
                 System.out.println("Introduce el titulo");
                 l = biblioteca.buscarLibro(pedirString());
-                if (l != null)
-                    System.out.println(l.toString());
-                else {
+                if (l == null){
                     System.out.println("Libro no encontrado");
                 }
                 break;
             case 2:
                 System.out.println("Introduce el ISBN");
                 l = biblioteca.buscarLibroPorISBN(pedirString());
-                if (l != null)
-                    System.out.println(l.toString());
-                else {
+                if (l == null){
                     System.out.println("Libro no encontrado");
                 }
                 break;
@@ -191,7 +210,7 @@ public class BibliotecaTerminal {
                 System.out.println("Introduce el autor");
                 ls = biblioteca.buscarLibrosPorAutor(pedirString());
                 if (ls != null && ls.length > 0) {
-                    System.out.println(GestorLibro.toString(ls));
+                    System.out.println(GestorLibro.infoLibros(ls));
                 } else {
                     System.out.println("No se ha encontrado ningún libro");
                 }
@@ -200,7 +219,7 @@ public class BibliotecaTerminal {
                 System.out.println("Selecciona la categoria");
                 ls = biblioteca.buscarLibrosPorCategoria(pedirCategoria());
                 if (ls != null && ls.length > 0) {
-                    System.out.println(GestorLibro.toString(ls));
+                    System.out.println(GestorLibro.infoLibros(ls));
                 } else {
                     System.out.println("No se ha encontrado ningún libro");
                 }
@@ -208,7 +227,7 @@ public class BibliotecaTerminal {
         }
         if ((opcion==3||opcion==4)&& ls != null && ls.length > 0){
             System.out.println("Selecciona un libro");
-            int seleccion = pedirNumero(0, ls.length-1);
+            int seleccion = pedirNumero(0, ls.length);
             l = ls[seleccion];
         }
         return l;
@@ -233,25 +252,38 @@ public class BibliotecaTerminal {
 
     public void realizarPrestamo() {
         Libro l = seleccionarLibro();
-        System.out.println("¿Quieres pedir prestado el siguiente libro?");
-        System.out.println(l.toString());
-        if (pedirBooleano()){
-            try {
-                biblioteca.prestar(l);
+        if (l!=null){
+            System.out.println("¿Quieres pedir prestado el siguiente libro?(y/n)");
+            System.out.println(l.infoLibro());
+            if (pedirBooleano()){
+                try {
+                    biblioteca.prestar(l);
+                }
+                catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
             }
-            catch(Exception e){
-                System.out.println(e.getMessage());
+            else {
+                System.out.println("Operación cancelada");
             }
         }
     }
 
     public void devolverPrestamo() {
         if (biblioteca.getSesion().getNPrestadosActual()>0){
-            System.out.println(biblioteca.getSesion().getPrestados().toString());
+            System.out.println(biblioteca.getSesion().getPrestados().infoLibros());
             System.out.println("Selecciona un libro para devolver");
             int seleccion = pedirNumero(0, biblioteca.getSesion().getNPrestadosActual());
             try {
-                biblioteca.devolver(biblioteca.getSesion().getPrestados().getLibro(seleccion));
+                System.out.println("¿Quieres devolver el siguiente libro?(y/n)");
+                System.out.println(biblioteca.getSesion().getPrestados().getLibro(seleccion));
+                if (pedirBooleano()){
+                    biblioteca.devolver(biblioteca.getSesion().getPrestados().getLibro(seleccion));
+                    System.out.println("El libro se ha devuelto correctamente");
+                }
+                else{
+                    System.out.println("Operación cancelada");
+                }
             }catch(Exception e){
                 System.out.println(e.getMessage());
             }
@@ -268,7 +300,7 @@ public class BibliotecaTerminal {
         }
         else{
             System.out.println("Tus libros prestados:");
-            System.out.println(biblioteca.getSesion().getPrestados().toString());
+            System.out.println(biblioteca.getSesion().getPrestados().infoLibros());
         }
     }
 
@@ -286,7 +318,7 @@ public class BibliotecaTerminal {
             System.out.println("La biblioteca no ha realizado ningún prestamo");
         }else{
             System.out.println("Libros más prestados:");
-            System.out.println(GestorLibro.toString(biblioteca.librosMasPrestados()));
+            System.out.println(GestorLibro.infoLibros(biblioteca.librosMasPrestados()));
         }
     }
 
@@ -295,7 +327,7 @@ public class BibliotecaTerminal {
             System.out.println("La biblioteca no tiene usuarios");
         }else{
             System.out.println("Usuarios con más prestamos:");
-            System.out.println(GestorUsuario.toString(biblioteca.usuariosConMasPrestamos()));
+            System.out.println(GestorUsuario.infoUsuarios(biblioteca.usuariosConMasPrestamos()));
         }
     }
 
@@ -306,7 +338,7 @@ public class BibliotecaTerminal {
                 "  *          BIBLIOTECA CENTRAL             *  \n" +
                 "  *                                         *  \n" +
                 "  *******************************************" + RESET);
-
+        System.out.println(YELLOW + "   Bienvenido "+ biblioteca.getSesion().getNick() + RESET);
         System.out.println(BLUE +
                 "\n   =======================================" +
                 "\n  ||          GESTIÓN DE LIBROS          ||" +
@@ -358,7 +390,7 @@ public class BibliotecaTerminal {
                 "  *          BIBLIOTECA CENTRAL             *  \n" +
                 "  *                                         *  \n" +
                 "  *******************************************" + RESET);
-
+        System.out.println(YELLOW + "   Bienvenido "+ biblioteca.getSesion().getNick() + RESET);
         System.out.println(BLUE +
                 "\n   =======================================" +
                 "\n  ||          GESTIÓN DE LIBROS          ||" +
@@ -372,10 +404,11 @@ public class BibliotecaTerminal {
                 "\n   =======================================");
         System.out.println("  [3] Realizar préstamo de libro");
         System.out.println("  [4] Devolver libro prestado");
+        System.out.println("  [5] Mostrar libros prestados");
 
         System.out.println(RED +
                 "\n   =======================================" +
-                "\n  [5]               SALIR                ||" +
+                "\n  [6]               SALIR                ||" +
                 "\n   =======================================");
 
         System.out.println(PURPLE +
@@ -397,6 +430,8 @@ public class BibliotecaTerminal {
                 "\n   =======================================" +
                 "\n  ||          INICIO DE SESIÓN           ||" +
                 "\n   =======================================" + RESET);
+        System.out.println("  [1] Iniciar sesión");
+        System.out.println("  [2] Salir");
     }
 
     public void mostrarMenuBusquedaLibro() {
@@ -540,7 +575,4 @@ public class BibliotecaTerminal {
         sc.nextLine();
     }
 
-    public static void main(String[] args) {
-
-    }
 }

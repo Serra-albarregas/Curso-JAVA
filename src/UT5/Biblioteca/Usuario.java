@@ -107,6 +107,9 @@ public class Usuario {
         return this.nick.equals(nick) && this.pass.equals(pass);
     }
 
+    public String infoUsuario(){
+        return nick + " -" + apellidos + ", " + nombre + "- " + email + ". Libros prestados: actual " + getPrestados().getLleno() + " total " + prestamosTotales;
+    }
 
     @Override
     public String toString() {

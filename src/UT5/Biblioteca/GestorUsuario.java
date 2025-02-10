@@ -88,6 +88,22 @@ public class GestorUsuario {
         return Arrays.copyOf(usuarios, lleno);
     }
 
+    public String infoUsuarios(){
+        String stringUsuario = "";
+        for (int i = 0; i < lleno; i++) {
+            stringUsuario += usuarios[i].infoUsuario()+ "\n";
+        }
+        return stringUsuario;
+    }
+
+    public static String infoUsuarios(Usuario[] usuarios){
+        String stringUsuario = "";
+        for (int i = 0; i < usuarios.length; i++) {
+            stringUsuario += usuarios[i].infoUsuario() + "\n";
+        }
+        return stringUsuario;
+    }
+
     @Override
     public String toString() {
         String stringUsuario = "";

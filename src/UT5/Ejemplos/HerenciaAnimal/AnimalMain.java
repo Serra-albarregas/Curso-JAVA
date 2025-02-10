@@ -2,25 +2,22 @@ package UT5.Ejemplos.HerenciaAnimal;
 
 public class AnimalMain {
     public static void main(String args[]){
-        Animal animal1 = new Animal();
-        Animal animal2 = new Ardilla();
-        Ardilla animal3 = new Ardilla();
-        //Ardilla animal4 = new Animal();
-        Object animal4 = new Animal();
-    
-        Ardilla ardillaAux = (Ardilla)animal2;
-    
-        Animal[] animales=new Animal[3];
-        animales[0]=animal1;
-        animales[1]=animal2;
-        animales[2]=animal3;
-
+        Conejo conejo1 = new Conejo();
+        //Animal animal1 = new Animal();
+        Animal conejo2 = new Conejo();
+        Ardilla ardilla = new Ardilla();
         
+        Animal[] animales = new Animal[4];
+        animales[0] = conejo1;
+        //animales[1] = animal1;
+        animales[2] = conejo2;
+        animales[3] = ardilla;
+
         for (int i = 0; i < animales.length; i++) {
             System.out.println(animales[i].toString());
-            if (animales[i] instanceof Ardilla){
-                Ardilla ardilla=(Ardilla)animales[i];
-                ardilla.saludar();
+            if (animales[i] instanceof Conejo){
+                Conejo conejo = (Conejo) animales[i];
+                conejo.comerCable();
             }
         }
     }

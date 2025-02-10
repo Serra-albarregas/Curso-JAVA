@@ -148,6 +148,30 @@ public class GestorLibro {
         return Arrays.copyOf(libros,lleno);
     }
 
+    public String infoLibros(){
+        String stringLibro="";
+        for (int i = 0; i < lleno; i++) {
+            stringLibro += i + "-" + libros[i].infoLibro() + "\n";
+        }
+        return stringLibro;
+    }
+
+    public static String infoLibros(Libro[] libros){
+        String stringLibro="";
+        for (int i = 0; i < libros.length; i++) {
+            stringLibro += i + "-" + libros[i].infoLibro() + "\n";
+        }
+        return stringLibro;
+    }
+
+    public String infoLibrosAdmin(){
+        String stringLibro="";
+        for (int i = 0; i < lleno; i++) {
+            stringLibro += i + "-" + libros[i].infoLibroAdmin() + "\n";
+        }
+        return stringLibro;
+    }
+
     @Override
     public String toString() {
         String stringLibro = "";
