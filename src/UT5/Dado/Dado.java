@@ -163,6 +163,10 @@ public class Dado {
         return resultado;
     }
 
+    public int tirarDadosMod2(int veces) {
+        return tirarDados(veces)+this.modificador*veces;
+    }
+
     /**
      * Simula un lanzamiento de dado con ventaja y devuelve el mayor de los dos resultados.
      * @return El resultado del lanzamiento de dado con ventaja.

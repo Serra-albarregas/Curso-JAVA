@@ -30,6 +30,11 @@ public class Caballo extends Animal{
         System.out.println("HIII");
     }
 
+    @Override
+    public void hacerSonido(){
+        relinchar();
+    }
+
     public int correr(int distancia){
         return distancia/velocidad;
     }

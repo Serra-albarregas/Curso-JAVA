@@ -43,6 +43,11 @@ public class Gato extends Animal{
     }
 
     @Override
+    public void hacerSonido(){
+        maullar();
+    }
+
+    @Override
     public String toString() {
         return super.toString() + 
             " colorPelaje='" + getColorPelaje() + "'" +

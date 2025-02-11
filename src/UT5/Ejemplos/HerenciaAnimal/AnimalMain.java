@@ -15,10 +15,8 @@ public class AnimalMain {
 
         for (int i = 0; i < animales.length; i++) {
             System.out.println(animales[i].toString());
-            if (animales[i] instanceof Conejo){
-                Conejo conejo = (Conejo) animales[i];
-                conejo.comerCable();
-            }
+            animales[i].hacerSonido();
+            
         }
     }
 }

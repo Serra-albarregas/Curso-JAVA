@@ -42,6 +42,9 @@ public abstract class Animal {
         this.edad = edad;
     }
 
+    public void hacerSonido(){
+        System.out.println("Soy generico");
+    }
 
     @Override
     public String toString() {

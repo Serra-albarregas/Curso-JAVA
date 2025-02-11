@@ -51,6 +51,10 @@ public class Perro extends Animal{
         System.out.println("GUAU");
     }
 
+    @Override
+    public void hacerSonido(){
+        ladrar();
+    }
 
     @Override
     public String toString() {
