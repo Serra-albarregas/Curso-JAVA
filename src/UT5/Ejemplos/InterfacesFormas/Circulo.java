@@ -29,7 +29,7 @@ public class Circulo implements Forma, Dibujo{
     // Podemos sobreescribir los métodos por defecto de la interfaz, aunque no es obligatorio
     @Override
     public void pintar(){
-        System.out.println("Pinta desde circulo");
+        System.out.println("Pinta desde circulo de color " + color);
     }
     
 }
