@@ -1,8 +1,7 @@
 package UT5.Ejemplos.InterfacesConocidas;
 import java.util.Arrays;
-import java.util.Iterator;
 
-public class Plantacion implements Iterable<Planta>{
+public class Plantacion {
     Planta[] plantas;
     private int lleno;
     private static final int TAM = 100;
@@ -46,29 +45,7 @@ public class Plantacion implements Iterable<Planta>{
         return plantas;
     }
 
-    @Override
-    public Iterator<Planta> iterator() {
-        return new IteratorPlantacion();
-    }
-
-    public class IteratorPlantacion implements Iterator<Planta>{
-        protected int posicion;
-        public IteratorPlantacion(){
-            posicion=0;
-        }
-        @Override
-        public boolean hasNext() {
-            if (posicion<lleno) return true;
-            else return false;
-        }
     
-        @Override
-        public Planta next() {
-            posicion++;
-            return plantas[posicion-1];
-        }
-        
-    }
     
     public static void main(String[] args) {
         Plantacion plantacion = new Plantacion();
@@ -80,11 +57,5 @@ public class Plantacion implements Iterable<Planta>{
         System.out.println(plantacion);
         plantacion.ordenar();
         System.out.println(plantacion);
-
-        System.out.println(plantacion.getPlantas()[0].clone() + "\n");
-
-        for (Planta planta : plantacion) {
-            System.out.println(planta);
-        }
     }
 }
