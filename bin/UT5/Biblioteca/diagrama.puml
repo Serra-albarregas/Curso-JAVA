@@ -1,0 +1,92 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Biblioteca {
+    - GestorLibro existencias
+    - GestorLibro prestados
+    - GestorUsuario usuarios
+    - Usuario sesion
+    - int totalPrestados
+    + addLibro(Libro l): boolean
+    + eliminarLibro(String titulo): boolean
+    + buscarLibro(String titulo): Libro
+    + addUsuario(Usuario u): boolean
+    + inicioSesion(String nick, String pass): boolean
+    + prestar(Libro libro): void
+    + devolver(Libro libro): void
+}
+
+class BibliotecaMain {
+    + main(String[] args): void
+}
+
+class BibliotecaTerminal {
+    - Scanner sc
+    - Biblioteca biblioteca
+    + loopPrincipal(): void
+    + addLibro(): void
+    + eliminarLibro(): void
+    + realizarPrestamo(): void
+    + devolverPrestamo(): void
+}
+
+class GestorLibro {
+    - Libro[] libros
+    - int lleno
+    - int tam
+    + addLibro(Libro l): boolean
+    + eliminarLibro(String titulo): boolean
+    + buscarLibro(String titulo): Libro
+    + infoLibros(): String
+}
+
+class GestorUsuario {
+    - Usuario[] usuarios
+    - int lleno
+    - int tam
+    + addUsuario(Usuario u): boolean
+    + buscarUsuario(String nick): Usuario
+    + eliminarUsuario(String nick): boolean
+    + infoUsuarios(): String
+}
+
+class Libro {
+    - String titulo
+    - String autor
+    - String ISBN
+    - Date fechaPublicacion
+    - Usuario prestadoA
+    + getTitulo(): String
+    + getAutor(): String
+    + getISBN(): String
+    + getFechaPublicacion(): Date
+    + prestar(Usuario prestadoA): void
+}
+
+class Usuario {
+    - String nombre
+    - String apellidos
+    - String nick
+    - String pass
+    - GestorLibro prestados
+    + getNombre(): String
+    + getNick(): String
+    + getPass(): String
+    + pedirPrestado(Libro l): void
+    + devolver(Libro l): void
+}
+
+' Relaciones con composición (♦)
+Biblioteca *-- GestorLibro : existencias
+Biblioteca *-- GestorLibro : prestados
+Biblioteca *-- GestorUsuario : usuarios
+Usuario *-- GestorLibro : prestados
+
+' Relaciones con agregación (◇)
+Biblioteca o-- Usuario : sesion
+Libro o-- Usuario : prestadoA
+
+' Asociación simple
+BibliotecaTerminal --> Biblioteca : biblioteca
+
+@enduml

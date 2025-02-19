@@ -1,4 +1,4 @@
-package UT5.Ejemplos.InterfacesConocidasCompleto;
+package UT5.InterfacesConocidas;
 import java.util.Objects;
 
 public class Planta implements Comparable<Planta>, Cloneable{
