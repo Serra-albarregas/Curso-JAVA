@@ -6,8 +6,8 @@ import java.util.Queue;
 
 public class EjemList {
     public static void main(String[] args) {
-        comparativaListas();
-        //pruebaRendimiento();
+        //comparativaListas();
+        pruebaRendimiento();
         //pruebaQueue();
     }
 
