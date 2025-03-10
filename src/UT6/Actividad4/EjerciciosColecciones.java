@@ -29,13 +29,16 @@ public class EjerciciosColecciones {
                 case 6 -> ejercicio6();
                 case 7 -> ejercicio7();
                 case 8 -> ejercicio8();
-                case 9 -> ejercicio9v2();
+                case 9 -> ejercicio9();
                 default -> funcionando = false;
             }
         } while (funcionando);
         sc.close();
     }
 
+    /**
+     * Elimina los numero pares de una lista
+     */
     private static void ejercicio1() {
         ArrayList<Integer> lista = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -44,21 +47,27 @@ public class EjerciciosColecciones {
 
         System.out.println(lista.toString());
 
+        // Cuidado, no se puede modificar una lista mientras se recorre
         /**for (Integer integer : lista) {
             if (integer%2==0){
                 lista.remove(integer);
             }
         }*/
 
+        // Forma correcta: recorrido inverso o reducción del índice en el recorrido directo
         for (int i = 0; i < lista.size(); i++) {
             if (lista.get(i)%2==0){
                 lista.remove(i);
+                i--;
             }
         }
 
         System.out.println(lista);
     }
 
+    /**
+     * Suma del último elemento con el anterior de forma sucesiva
+     */
     private static void ejercicio2() {
         ArrayList<Integer> lista = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -67,11 +76,15 @@ public class EjerciciosColecciones {
         System.out.println(lista);
 
         while (lista.size()>1) {
+            // Set para modificar la penúltima posición,
+            // Get para obtener el valor de la penultima posición
+            // Remove para obtener y borrar el valor de la última posicion
             lista.set(lista.size()-2, lista.get(lista.size()-2)+lista.remove(lista.size()-1));
             System.out.println(lista);
         }
     }
 
+    // Generador de una lista de números aleatorios sin repetir
     private static void ejercicio3() {
         ArrayList<Integer> lista = new ArrayList<>();
         Random r = new Random();
@@ -80,12 +93,13 @@ public class EjerciciosColecciones {
             int numero;
             do {
                 numero = r.nextInt(10)+1;
-            } while (lista.contains(numero));
+            } while (lista.contains(numero));       // Comprobación de que la lista no contine el número generado
             lista.add(numero);
         }
         System.out.println(lista);
     }
 
+    // Generador de un conjunto de números aleatorios sin repetir
     @SuppressWarnings("unused")
     private static void ejercicio3v2() {
         LinkedHashSet<Integer> conjunto = new LinkedHashSet<>();
@@ -95,16 +109,17 @@ public class EjerciciosColecciones {
             int numero;
             do {
                 numero = r.nextInt(10)+1;
-            } while (conjunto.contains(numero));
+            } while (conjunto.contains(numero));        // En este caso, al usarse un hashset, la operación contains es más eficiente
             conjunto.add(numero);
         }
         System.out.println(conjunto);
     }
 
+    // Generador de una lista de números aleatorios sin repetir, extrayendo números de una lista auxiliar
     @SuppressWarnings("unused")
     private static void ejercicio3v3() {
         ArrayList<Integer> lista = new ArrayList<>();
-        ArrayList<Integer> numerosPosibles = new ArrayList<>();
+        ArrayList<Integer> numerosPosibles = new ArrayList<>(); //Lista auxiliar con todos los números posibles
         Random r = new Random();
 
         for (int i = 0; i < 10; i++) {
@@ -112,6 +127,7 @@ public class EjerciciosColecciones {
         }
 
         while (lista.size()<10) {
+            // Extraemos un elemento al azar de la lista auxiliar, y lo insertamos en la lista de numeros
             int indice = r.nextInt(numerosPosibles.size());
             lista.add(numerosPosibles.get(indice));
             numerosPosibles.remove(indice);
@@ -119,6 +135,9 @@ public class EjerciciosColecciones {
         System.out.println(lista);
     }
 
+    /**
+     * Generador aleatorio de grupos
+     */
     private static void ejercicio4() {
         ArrayList<String> nombres = new ArrayList<>();
         nombres.add("Juan");
@@ -152,12 +171,14 @@ public class EjerciciosColecciones {
         nombres.add("David");
         nombres.add("Eva");
 
+        // Lista con todos los grupos, cada uno de ellos en otra lista
         ArrayList<ArrayList<String>> grupos = new ArrayList<>();
         Random r = new Random();
 
         for (int i = 0; i < 6; i++) {
-            grupos.add(new ArrayList<String>());
+            grupos.add(new ArrayList<String>());        //IMPORTANTE: crear las listas internas
             for (int j = 0; j < 5; j++) {
+                // Extraemos un elemento de la lista original y lo insertamos en un grupo
                 int indice = r.nextInt(nombres.size());
                 grupos.get(i).add(nombres.get(indice));
                 nombres.remove(indice);
@@ -168,12 +189,16 @@ public class EjerciciosColecciones {
         }
     }
 
+    /**
+     * Comprobador de palabras repetidas
+     */
     private static void ejercicio5() {
+        // Comprobaremos con un hashset las palabras que ya han sido leídas
         HashSet<String> conjunto = new HashSet<>();
         String leido = "";
         do{
             leido = pedirString().toLowerCase();
-            if (conjunto.contains(leido)){
+            if (conjunto.contains(leido)){      // Si está contenida en el set, ya ha sido leída
                 System.out.println("La palabra "+ leido+" ya ha sido leída");
             }
             else{
@@ -182,14 +207,23 @@ public class EjerciciosColecciones {
         }while(!leido.equals("fin"));
     }
 
+    /**
+     * El juego del bingo
+     */
     private static void ejercicio6() {
         ArrayList<Integer> bombo = new ArrayList<>();
+        // Los cartones están representados por un TreeSet, pues solo nos interesa comprobar que el número está
+        // También nos interesa representar el cartón en orden
+        // Todos los cartones se almacenan en una lista
         ArrayList<TreeSet<Integer>> cartones = new ArrayList<>();
         Random r = new Random();
 
+        // Llenamos el bombo con todos los números
         for (int i = 0; i < 100; i++) {
             bombo.add(i);
         }
+
+        // Creamos los cartones con números aleatorios sin repetir, como en el ejercicio 3
         for (int i = 0; i < 5; i++) {
             cartones.add(new TreeSet<>());
             for (int j = 0; j < 15; j++) {
@@ -205,14 +239,16 @@ public class EjerciciosColecciones {
         }
 
         boolean bingo = false;
+        // Seguiremos jugando mientras el bombo siga teniendo números o mientras nadie haya ganado, cosa que comprobamos con una bandera
         while (!bingo && !bombo.isEmpty()) {
             int indiceBombo = r.nextInt(bombo.size());
             int bola = bombo.get(indiceBombo);
             bombo.remove(indiceBombo);
             System.out.println("Sale la bola " + bola);
+            // Recorremos la lista de cartones para hacer la comprobación en cada uno de ellos
             for (int i = 0; i < cartones.size(); i++) {
                 if (cartones.get(i).contains(bola)){
-                    cartones.get(i).remove(bola);
+                    cartones.get(i).remove(bola);   // Cuando se encuentra una coincidencia, se elimina el número del set para "tacharlo"
                     System.out.println("El jugador " + i + " ha tachado el numero " + bola);
                     if (cartones.get(i).isEmpty()){
                         bingo=true;
@@ -227,12 +263,19 @@ public class EjerciciosColecciones {
         }
     }
 
+    /**
+     * Contador de cuantas veces aparece una palabra en una frase
+     */
     private static void ejercicio7() {
         String frase = pedirString();
+        // Formateamos la frase, quitando comas y puntos
         frase=frase.replace(",", "").replace(".", "");
+        // Separamos la frase en palabras, usando espacios como separador
         String[] palabras = frase.split("[ ]+");
+        // Creamos un mapa para contar cuantas veces aparece cada palabra
         HashMap<String, Integer> conteo = new HashMap<>();
         for (int i = 0; i < palabras.length; i++) {
+            // Si no está, se añade con 1 como numero de veces, si sí está se incrementa en 1 las ocurrencias
             if (conteo.containsKey(palabras[i])){
                 conteo.put(palabras[i], conteo.get(palabras[i])+1);
             }
@@ -245,7 +288,9 @@ public class EjerciciosColecciones {
         }
     }
 
-
+    /**
+     * Sumar números no repetidos en una lista
+     */
     private static void ejercicio8() {
         List<Integer> numeros = List.of(1,5,4,5,1,5,6,1,2,3,1,5,1);
         System.out.println("La suma de los no repetidos es: " + sumarNoRepetidos(numeros));
@@ -271,55 +316,12 @@ public class EjerciciosColecciones {
         return suma;
     }
 
-    @SuppressWarnings("unused")
+
+    /**
+     * Conversor de número romano a número decimal
+     */
     private static void ejercicio9() {
-        HashMap<String, Integer> traduccion = new HashMap<>();
-        traduccion.put("I", 1);
-        traduccion.put("V", 5);
-        traduccion.put("X", 10);
-        traduccion.put("L", 50);
-        traduccion.put("C", 100);
-        traduccion.put("D", 500);
-        traduccion.put("M", 1000);
-
-        String romano="";
-        boolean correcto=false;
-        do {
-            romano = pedirString().toUpperCase();
-            correcto = romano.matches("[IVXLCDM]*");
-            if (!correcto) System.out.println("El formato del número romano es incorrecto, intentalo de nuevo");
-        } while (!correcto);
-        
-        ArrayList<String> bloques = new ArrayList<>();
-        String bloque="";
-        for (int i = 0; i < romano.length(); i++) {
-            if (bloque.equals("")){
-                bloque+=romano.charAt(i);
-            }else if(traduccion.get(String.valueOf(romano.charAt(i)))>traduccion.get(String.valueOf(bloque.charAt(bloque.length()-1)))){
-                bloque+=romano.charAt(i);
-            }
-            else{
-                bloques.add(bloque);
-                bloque=String.valueOf(romano.charAt(i));
-            }
-        }
-        bloques.add(bloque);
-        bloque="";
-        System.out.println(bloques);
-
-        int suma=0;
-        for (String string : bloques) {
-            int resta = traduccion.get(String.valueOf(string.charAt(string.length()-1)));
-            for (int i = string.length()-2; i>=0; i--) {
-                resta-=traduccion.get(String.valueOf(string.charAt(i)));
-            }
-            suma+=resta;
-        }
-        System.out.println("Conversión del numero: " + romano + ": " + suma);
-    }
-
-    @SuppressWarnings("unused")
-    private static void ejercicio9v2() {
+        // Se usa un mapa para mapear los valores
         HashMap<Character, Integer> traduccion = new HashMap<>();
         traduccion.put('I', 1);
         traduccion.put('V', 5);
@@ -331,6 +333,7 @@ public class EjerciciosColecciones {
 
         String romano="";
         boolean correcto=false;
+        // Comprobación de formato
         do {
             romano = pedirString().toUpperCase();
             correcto = romano.matches("[IVXLCDM]*");
@@ -338,6 +341,7 @@ public class EjerciciosColecciones {
         } while (!correcto);
         
         int suma = 0;
+        // Hay que identificar si el siguiente número es más grande o más pequeño, para restarlo o sumarlo
         for (int i = 0; i < romano.length()-1; i++) {
             int numero = traduccion.get(romano.charAt(i));
             int siguiente = traduccion.get(romano.charAt(i+1));
