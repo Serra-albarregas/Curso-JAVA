@@ -18,5 +18,3 @@
 
 📌 **Si necesitas procesamiento funcional (filtrar, mapear, etc.):**  
 ✅ `Files.lines()`, ya que devuelve un `Stream<String>` y permite usar `filter()`, `map()`, `forEach()`, etc.
-
-🚀 **Con esta tabla puedes elegir la mejor opción según tu caso.**

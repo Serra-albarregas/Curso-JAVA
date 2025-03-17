@@ -110,10 +110,4 @@ try (Stream<String> lineas = Files.lines(Path.of("restaurantes.csv"))) {
 ✅ **`filter()` para quedarnos solo con los códigos postales que empiezan en "6".**  
 ✅ **`forEach()` para imprimir los resultados.**  
 
-## 🔥 Conclusión
-✔ **Los Streams simplifican el procesamiento de datos** con operaciones funcionales.  
-✔ **Son más eficientes que los bucles tradicionales**, especialmente en datos grandes.  
-✔ **Se pueden ejecutar en paralelo** (`parallelStream()`) para mejorar el rendimiento.  
-
-🚀 **¿Listo para usarlos en tu proyecto?** 😃
 
