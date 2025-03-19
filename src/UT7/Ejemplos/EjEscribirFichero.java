@@ -1,4 +1,4 @@
-package UT7;
+package UT7.Ejemplos;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
