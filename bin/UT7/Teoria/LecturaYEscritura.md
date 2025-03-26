@@ -26,7 +26,7 @@ public class LeerArchivo {
     }
 }
 ```
-### Explicación:
+### Donde:
 - `FileReader` se encarga de leer el archivo carácter por carácter.
 - `BufferedReader` añade un buffer intermedio para agrupar los caracteres y minimizar los accesos al disco, favoreciendo la eficiencia.
 - Se usa un bucle `while` para leer el archivo línea por línea hasta que `readLine()` devuelva `null`.
@@ -52,7 +52,7 @@ public class EscribirArchivo {
     }
 }
 ```
-### Explicación:
+### Donde:
 - `FileWriter` escribe el archivo carácter por carácter.
 - `BufferedWriter` utiliza un buffer intermedio para agrupar carácteres, minimizando los accesos a disco y favoreciendo la eficiencia.
 - Se usa `write()` para escribir líneas en el archivo.

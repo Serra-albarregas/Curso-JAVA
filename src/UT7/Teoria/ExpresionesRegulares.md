@@ -76,19 +76,60 @@ if (matcher2.find()) {
 ---
 
 ## 🔹 **Grupos y Alternancia**
+Los **grupos** en expresiones regulares permiten capturar partes específicas de una cadena y usarlas posteriormente. Se definen con paréntesis `()` y pueden ser utilizados para extraer información, aplicar cuantificadores a una sección específica o hacer referencias posteriores.  
 
-| Expresión | Significado |
-|-----------|------------|
-| `(abc)`   | Grupo de captura |
-| `(?:abc)` | Grupo sin captura |
-| `a|b`     | Alternancia (a o b) |
 
-Ejemplo:
+Tipo de Grupo | Expresión | Descripción
+Grupo Capturador | (expresión) | Guarda la coincidencia para su uso posterior.
+Grupo No Capturador | (?:expresión) | Agrupa sin guardar la coincidencia.
+Grupo de Referencia | \n | Se refiere a una coincidencia anterior en la misma expresión, donde n es el número del grupo en el orden en el que aparece.
+
 ```java
-String regex = "(Hola|Adiós), mundo!";
-System.out.println("Hola, mundo!".matches(regex));  // true
-System.out.println("Adiós, mundo!".matches(regex)); // true
+String texto = "Mi número de teléfono es 123-456-7890.";
+String regex = "(\\d{3})-(\\d{3})-(\\d{4})";
+Pattern pattern = Pattern.compile(regex);
+Matcher matcher = pattern.matcher(texto);
+
+if (matcher.find()) {
+    System.out.println("Número completo: " + matcher.group(0)); // 123-456-7890
+    System.out.println("Código de área: " + matcher.group(1));  // 123
+    System.out.println("Número central: " + matcher.group(2));  // 456
+    System.out.println("Número final: " + matcher.group(3));    // 7890
+}
 ```
+
+### 🔹 Referencias a Grupos
+Las referencias permiten reutilizar partes capturadas dentro de la misma expresión o en una sustitución.
+
+#### Referencias dentro de la Misma Expresión
+Expresión para detectar palabras repetidas:
+
+```java
+String regex = "\\b(\\w+)\\s+\\1\\b";
+String texto = "hola hola mundo";
+System.out.println(texto.matches(regex)); // true
+```
+Captura entre los paréntesis la primera palabra de la frase, luego se hace referencia a ella mediante \1
+
+#### Referencias en Sustitución
+Puede utilizarse el carácter $ para hacer referencias a grupos desde fuera de la expresión regular.
+```java
+String texto = "Hola Juan, bienvenido Juan";
+String resultado = texto.replaceAll("(Juan)", "Sr. $1");
+System.out.println(resultado); // Hola Sr. Juan, bienvenido Sr. Juan
+```
+Reemplaza cada "Juan" con "Sr. Juan" utilizando $1 como referencia.
+
+---
+
+### 🔹 4. Alternancia (|)
+La alternancia permite definir múltiples opciones dentro de una expresión. Funciona como un "o lógico" (OR).
+
+```java
+String regex = "rojo|azul|verde";
+System.out.println("Me gusta el azul".matches(".*" + regex + ".*")); // true
+```
+Detecta si una cadena contiene "rojo", "azul" o "verde".
 
 ---
 
@@ -144,6 +185,3 @@ Encontrado: $39.50
 | `\d{4}-\d{2}-\d{2}` | Fecha en formato YYYY-MM-DD |
 | `[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}` | Correo electrónico |
 | `https?://[\w.-]+` | URL con http o https |
-
-🚀 **¿Tienes dudas? ¡Déjalas en los comentarios!** 😊
-
