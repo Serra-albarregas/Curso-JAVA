@@ -62,10 +62,9 @@ SceneBuilder permite diseñar interfaces gráficas para JavaFX mediante una inte
 ### **Pasos de Instalación**
 1. Descarga SceneBuilder desde [Gluon SceneBuilder](https://gluonhq.com/products/scene-builder/) o desde [Oracle](https://www.oracle.com/java/technologies/javafxscenebuilder-1x-archive-downloads.html)
 2. Instálalo en `C:\Program Files\SceneBuilder`.
-3. En Visual Studio Code, abre la configuración (`Ctrl + ,`) y busca `javafx.sceneBuilder`.
-4. Establece la ruta del ejecutable de SceneBuilder:
-   ```
-   C:\Program Files\SceneBuilder\SceneBuilder.exe
-   ```
-5. Guarda la configuración y reinicia VS Code.
 
+Los siguientes pasos son opcionales
+3. En Visual Studio Code, instala la extensión `SceneBuilder extension for Visual Studio Code`.
+4. En mostrar y ejecutar comandos, busca `Configure SceneBuilder path`.
+5. Seleccióna el fichero ejecutable de SceneBuilder en la ruta de instalación.
+6. Ahora, puedes abrir los archivos fxml directamente desde Visual Studio Code haciendo click derecho en ellos.

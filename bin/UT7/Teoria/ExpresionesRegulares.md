@@ -135,18 +135,97 @@ Detecta si una cadena contiene "rojo", "azul" o "verde".
 
 ## 🔹 **Lookahead y Lookbehind**
 
-| Expresión | Significado |
-|-----------|------------|
-| `(?=X)`   | Lookahead positivo (seguido de X) |
-| `(?!X)`   | Lookahead negativo (NO seguido de X) |
-| `(?<=X)`  | Lookbehind positivo (precedido por X) |
-| `(?<!X)`  | Lookbehind negativo (NO precedido por X) |
+Los **lookaround assertions** (Lookahead y Lookbehind) son expresiones que permiten realizar **coincidencias condicionales** sin incluir los caracteres en el resultado final. Se utilizan para asegurarse de que un patrón está (o no está) seguido o precedido por otro patrón sin consumirlo.
 
-Ejemplo:
+
+### 🔹 1. Lookahead
+
+El **lookahead** verifica si un patrón es seguido por otro sin incluirlo en la coincidencia final.  
+
+#### 🔹 Sintaxis  
+
+| Tipo | Expresión | Descripción |
+|------|-----------|-------------|
+| **Lookahead Positivo** | `X(?=Y)` | Coincide con `X` si **le sigue** `Y`. |
+| **Lookahead Negativo** | `X(?!Y)` | Coincide con `X` si **NO le sigue** `Y`. |
+
+---
+
+Ejemplo: Lookahead Positivo 
+Encuentra `"apple"` solo si le sigue `"pie"`:  
+
 ```java
-String regex = "\d(?=kg)"; // Dígito seguido de 'kg'
-System.out.println("5kg".matches(regex)); // true
+String texto = "apple pie, apple juice, apple tart";
+String regex = "apple(?= pie)";
+Pattern pattern = Pattern.compile(regex);
+Matcher matcher = pattern.matcher(texto);
+
+while (matcher.find()) {
+    System.out.println("Coincidencia: " + matcher.group());
+}
 ```
+Salida:
+Coincicencia: apple.
+
+Ejemplo: Lookahead Negativo
+Encuentra "apple" solo si NO le sigue "pie":
+
+```java
+String texto = "apple pie, apple juice, apple tart";
+String regex = "apple(?! pie)";
+Matcher matcher = Pattern.compile(regex).matcher(texto);
+
+while (matcher.find()) {
+    System.out.println("Coincidencia: " + matcher.group());
+}
+```
+Salida:
+Coincidencia: apple
+Coincidencia: apple
+
+---
+
+### 🔹 2. Lookbehind
+
+El lookbehind verifica si un patrón es precedido por otro sin incluirlo en la coincidencia.
+
+#### 🔹 Sintaxis
+
+| Tipo | Expresión | Descripción |
+|------|-----------|-------------|
+| **Lookbehind Positivo** | `(?<=Y)X` | Coincide con `X` si **está precedido por** `Y`. |
+| **Lookbehind Negativo** | `(?<!Y)X` | Coincide con `X` si **NO está precedido por** `Y`. |
+
+
+Ejemplo: Lookbehind positivo
+Encuentra "pie" solo si está precedido por "apple".
+
+```java
+String texto = "apple pie, banana pie, apple tart";
+String regex = "(?<=apple )pie";
+Matcher matcher = Pattern.compile(regex).matcher(texto);
+
+while (matcher.find()) {
+    System.out.println("Coincidencia: " + matcher.group());
+}
+```
+Salida:
+Coincidencia: pie
+
+Ejemplo: Lookbehind negativo
+Encuentra "pie" solo si **NO esta precedido** por "apple".
+
+```java
+String texto = "apple pie, banana pie, apple tart";
+String regex = "(?<!apple )pie";
+Matcher matcher = Pattern.compile(regex).matcher(texto);
+
+while (matcher.find()) {
+    System.out.println("Coincidencia: " + matcher.group());
+}
+```
+Salida:
+Coincidencia: pie
 
 ---
 
